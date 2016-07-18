@@ -26,7 +26,7 @@ public class AdminController extends BaseController{
     }
     public void logout(){
     	this.getSession().setAttribute("loginUser", null);
-    	redirect("admin/login");
+    	redirect("/admin/login");
     }
     
     public void checkLogin(){
@@ -43,7 +43,8 @@ public class AdminController extends BaseController{
     		if(sysUser != null){
     			try {
     				boolean isvalid = PasswordUtil.authenticate(password,
-    						sysUser.getBytes("password"), sysUser.getBytes("salt"));
+    						PasswordUtil.decode(sysUser.getStr("password")), 
+    						PasswordUtil.decode(sysUser.getStr("salt")));
     				if(isvalid){
     					result.put("success",true);
     					result.put("url", "admin/index");

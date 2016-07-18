@@ -1,5 +1,6 @@
 package com.demo.web.core.util;
 
+import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -9,26 +10,29 @@ import java.util.Arrays;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 
+import org.apache.commons.codec.binary.Base64;
+
 import com.jfinal.log.Log;
 
 /**
-* 类名称：PBKDF2 
-* 
-* 修改备注：
-* 
-* 1.当增加一个用户的时候，调用generateSalt()生成盐，然后调用getEncryptedPassword(),同时存储盐和密文。
-* 再次强调，不要存储明文密码，不要存储明文密码，因为没必要！不要担心将盐和密文存储在同一张表中，上面已经说过了，这个无关紧要。
-* 
-* 2.当认证用户的时候，从数据库中取出盐和密文，将他们和明文密码同时传给authenticate()，根据返回结果判断是否认证成功。
-* 
-* 3.当用户修改密码的时候，仍然可以使用原来的盐，只需要调用getEncryptedPassword()方法重新生成密文就可以了。
-*/
+ * 类名称：PBKDF2
+ * 
+ * 修改备注：
+ * 
+ * 1.当增加一个用户的时候，调用generateSalt()生成盐，然后调用getEncryptedPassword(),同时存储盐和密文。
+ * 再次强调，不要存储明文密码，不要存储明文密码，因为没必要！不要担心将盐和密文存储在同一张表中，上面已经说过了，这个无关紧要。
+ * 
+ * 2.当认证用户的时候，从数据库中取出盐和密文，将他们和明文密码同时传给authenticate()，根据返回结果判断是否认证成功。
+ * 
+ * 3.当用户修改密码的时候，仍然可以使用原来的盐，只需要调用getEncryptedPassword()方法重新生成密文就可以了。
+ */
 public class PasswordUtil {
 
 	@SuppressWarnings("unused")
 	private static Log log = Log.getLog(PasswordUtil.class);
 
-	public static boolean authenticate(String attemptedPassword, byte[] encryptedPassword, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static boolean authenticate(String attemptedPassword, byte[] encryptedPassword, byte[] salt)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 		// Encrypt the clear-text password using the same salt that was used to
 		// encrypt the original password
 		byte[] encryptedAttemptedPassword = getEncryptedPassword(attemptedPassword, salt);
@@ -38,7 +42,8 @@ public class PasswordUtil {
 		return Arrays.equals(encryptedPassword, encryptedAttemptedPassword);
 	}
 
-	public static byte[] getEncryptedPassword(String password, byte[] salt) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	public static byte[] getEncryptedPassword(String password, byte[] salt)
+			throws NoSuchAlgorithmException, InvalidKeySpecException {
 
 		// PBKDF2 with SHA-1 as the hashing algorithm. Note that the NIST
 		// specifically names SHA-1 as an acceptable hashing algorithm for
@@ -78,10 +83,40 @@ public class PasswordUtil {
 		return salt;
 	}
 
-	public static void main(String[] args) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	/**
+	 * 将二进制数据编码为BASE64字符串
+	 * 
+	 * @param binaryData
+	 * @return
+	 */
+	public static String encode(byte[] binaryData) {
+		try {
+			return new String(Base64.encodeBase64(binaryData), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
+	}
+
+	/**
+	 * 将BASE64字符串恢复为二进制数据
+	 * 
+	 * @param base64String
+	 * @return
+	 */
+	public static byte[] decode(String base64String) {
+		try {
+			return Base64.decodeBase64(base64String.getBytes("UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			return null;
+		}
+	}
+
+	public static void main(String[] args) throws Exception, InvalidKeySpecException {
 		String pass = "000000";
 		byte[] salt = generateSalt();
+		System.out.println(encode(salt));
 		byte[] encryptedPassword = getEncryptedPassword(pass, salt);
+		System.out.println(encode(encryptedPassword));
 		boolean bool = authenticate(pass, encryptedPassword, salt);
 		System.out.println(bool);
 	}
