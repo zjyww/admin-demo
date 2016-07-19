@@ -17,7 +17,7 @@
                                 <a aria-expanded="false" role="button" href="<%=basePath%>admin/index">主页</a>
                             </li>
                            <li class="nav navbar-top-links">
-                                <a href="<%=basePath%>admin/station/index">基站信息管理</a>
+                                <a href="<%=basePath%>admin/station/index">站点信息管理</a>
                             </li>
                             <li class="nav J_menuTab navbar-top-links">
                                 <a href="">电费信息管理</a>
@@ -26,7 +26,7 @@
                         </ul>
                         <ul class="nav navbar-top-links navbar-right">
                             <li>
-                                <a href="<%=basePath%>admin/logout">
+                                <a href="<%=basePath%>login/logout">
                                     <i class="fa fa-sign-out"></i> 退出
                                 </a>
                             </li>

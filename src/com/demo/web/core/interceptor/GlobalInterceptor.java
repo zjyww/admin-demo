@@ -46,6 +46,11 @@ public class GlobalInterceptor implements Interceptor {
                     }
                 }
                 c.setAttr("filted", "true");
+            }else{
+            	if(request.getSession().getAttribute("loginUser") == null){
+            		ai.getController().redirect("/login/index");
+            		return;
+            	}
             }
             ai.invoke();
         } catch (Exception e) {

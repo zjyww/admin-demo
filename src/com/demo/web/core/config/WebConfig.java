@@ -153,7 +153,7 @@ public class WebConfig extends JFinalConfig {
      */
     @Override
     public void afterJFinalStart() {
-        super.afterJFinalStart();
+        super.afterJFinalStart(); 
         WebConstants.fileUploadPath = getProperty("fileUploadPath");
         WebConstants.paramFilterChar = getProperty("paramFilterChar");
         WebConstants.platName = getProperty("platName");

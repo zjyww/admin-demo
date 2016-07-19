@@ -12,9 +12,14 @@ import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Model;
 
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.DateFormatConverter.DateFormatTokenizer;
+import org.apache.poi.ss.util.NumberToTextConverter;
 
 import java.io.File;
+import java.text.DateFormat;
 import java.util.List;
+
+import javax.swing.text.DateFormatter;
 
 public class PoiImporter {
 
@@ -52,9 +57,11 @@ public class PoiImporter {
                 String column = "";
                 switch (cellType) {
                     case Cell.CELL_TYPE_NUMERIC:
-                        // DecimalFormat format = new DecimalFormat();
-                        // format.setGroupingUsed(false);
-                        column = String.valueOf(cell.getDateCellValue());
+                    	if (DateUtil.isCellDateFormatted(cell)) {
+                    		column =  new DataFormatter().formatCellValue(cell);
+                        } else {
+                            column = NumberToTextConverter.toText(cell.getNumericCellValue());  
+                        }
                         break;
                     case Cell.CELL_TYPE_STRING:
                         column = cell.getStringCellValue();
@@ -66,7 +73,7 @@ public class PoiImporter {
                         column = cell.getCellFormula();
                         break;
                     case Cell.CELL_TYPE_ERROR:
-
+                    	;
                     case Cell.CELL_TYPE_BLANK:
                         column = " ";
                         break;
@@ -149,10 +156,10 @@ public class PoiImporter {
     }
 
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\zhangjy\\Desktop\\思湖物业台账.xlsx");
-        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule.xml");
+        File file = new File("C:\\Users\\Administrator\\Desktop\\思湖物业台账.xlsx");
+        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule2.xml");
         Rule rule = JaxbKit.unmarshal(xmlFile , Rule.class);
-        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("explanation"));
+        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("transferBank"));
        
         
     }

@@ -34,7 +34,7 @@
     		}
     		$.ajax({
     			type: "POST",
-    			url: "<%=basePath%>admin/checkLogin",     
+    			url: "<%=basePath%>login/checkLogin",     
     			data: {username:username,
     				password:password     
     			},

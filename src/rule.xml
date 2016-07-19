@@ -5,16 +5,24 @@
     　<!-- 非必须，默认-1.解析结束行坐标,负数时候从最后一行往回索引. -->
     <cells> <!-- 每一个单元格的解析策略 -->
         <cell>
-            <index>2</index>　<!-- 单元格索引,从0开始 -->
-            <attribute>name</attribute>　<!-- model属性名 -->
-        </cell>
-        <cell>
-            <index>2</index>
-            <attribute>cn_name</attribute>
+            <index>3</index>　<!-- 单元格索引,从0开始 -->
+            <attribute>area</attribute>　<!-- model属性名 -->
         </cell>
         <cell>
             <index>4</index>
-            <attribute>explanation</attribute>
+            <attribute>name</attribute>
+        </cell>
+        <cell>
+            <index>6</index>
+            <attribute>code</attribute>
+        </cell>
+        <cell>
+            <index>7</index>
+            <attribute>operatorCode</attribute>
+        </cell>
+        <cell>
+            <index>16</index>
+            <attribute>turnover</attribute>
         </cell>
     </cells>
 </rule>
