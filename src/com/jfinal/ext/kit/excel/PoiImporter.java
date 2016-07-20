@@ -156,10 +156,10 @@ public class PoiImporter {
     }
 
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\Administrator\\Desktop\\思湖物业台账.xlsx");
-        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule2.xml");
+        File file = new File("C:\\Users\\zhangjy\\Desktop\\思湖物业台账.xlsx");
+        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule.xml");
         Rule rule = JaxbKit.unmarshal(xmlFile , Rule.class);
-        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("transferBank"));
+        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("area"));
        
         
     }

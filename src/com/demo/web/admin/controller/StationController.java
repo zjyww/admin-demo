@@ -35,18 +35,16 @@ public class StationController extends BaseController{
     	int start = getParaToInt("offset");
     	int pageSize = getParaToInt("limit");
     	int pageNum = (start+pageSize)/pageSize;
-    	String sql = "select * from t_sysuser";
-    	Page<SysUser> users = SysUser.DAO.paginate(pageNum, pageSize, sql, "user_id");
+    	String sql = "select * ";
+    	Page<Station> station = Station.DAO.paginate(pageNum, pageSize, sql, "from t_station ");
     	Map<String, Object> result = new HashMap<String, Object>();
-    	result.put("total", users.getTotalRow());
-    	result.put("rows", users.getList());
+    	result.put("total", station.getTotalRow());
+    	result.put("rows", station.getList());
     	renderJson(result);
     }
     
     public void importExcel(){
     	try {
-			
-		
     	File excel = this.getFile("file").getFile();
     	File xmlFile = new File(PathKit.getRootClassPath()+"\\rule.xml");
         Rule rule = JaxbKit.unmarshal(xmlFile , Rule.class);
@@ -69,7 +67,6 @@ public class StationController extends BaseController{
         
         renderJsonSuccess("导入成功");
     	} catch (Exception e) {
-			// TODO: handle exception
     		renderJsonError("导入失败，请检查Excel文件格式！");
 		}
     }
@@ -84,5 +81,26 @@ public class StationController extends BaseController{
 				}
 			}
 		}
+	}
+	
+	public void add(){
+		render("/admin/station/edit.jsp");
+	}
+	
+	public void edit(){
+		this.setAttr("station", Station.DAO.findById(this.getParaToInt("id")));
+		render("/amdin/station/edit.jsp");
+	}
+	
+	public void save(){
+		
+	}
+	
+	public void delete(){
+		
+	}
+	
+	public void uploadImage(){
+		this.getFiles("file").get(0);
 	}
 }

@@ -14,5 +14,5 @@ public class Station extends Model<Station>{
 	/**
      * DAO
      */
-    public static final SysUser DAO = new SysUser();
+    public static final Station DAO = new Station();
 }

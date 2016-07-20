@@ -51,7 +51,7 @@ public class BaseController extends Controller {
      * 描述：前台统一首页地址
      */
     public void index() {
-
+    	render("/login/login.jsp");
     }
 
     /**
