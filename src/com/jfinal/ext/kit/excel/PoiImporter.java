@@ -11,15 +11,12 @@ import com.jfinal.kit.PathKit;
 import com.jfinal.kit.StrKit;
 import com.jfinal.plugin.activerecord.Model;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.ss.util.DateFormatConverter.DateFormatTokenizer;
 import org.apache.poi.ss.util.NumberToTextConverter;
 
 import java.io.File;
-import java.text.DateFormat;
 import java.util.List;
-
-import javax.swing.text.DateFormatter;
 
 public class PoiImporter {
 
@@ -58,7 +55,7 @@ public class PoiImporter {
                 switch (cellType) {
                     case Cell.CELL_TYPE_NUMERIC:
                     	if (DateUtil.isCellDateFormatted(cell)) {
-                    		column =  new DataFormatter().formatCellValue(cell);
+                    		 column = DateFormatUtils.format(cell.getDateCellValue(), "yyyy/MM/dd");
                         } else {
                             column = NumberToTextConverter.toText(cell.getNumericCellValue());  
                         }
@@ -117,7 +114,7 @@ public class PoiImporter {
         String message = "";
         for (int i = 0; i < values.length; i++) {
             String value = values[i];
-            Rule.Cell cell = matchCell(rule, i);
+            Rule.Cell cell = matchCell(rule, i); 
             if(cell == null) continue;
             String name = cell.getAttribute();
             String validateClassName = cell.getValidate();
@@ -156,10 +153,10 @@ public class PoiImporter {
     }
 
     public static void main(String[] args) {
-        File file = new File("C:\\Users\\zhangjy\\Desktop\\思湖物业台账.xlsx");
-        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule.xml");
+        File file = new File("C:\\Users\\Administrator\\Desktop\\思湖物业台账.xlsx");
+        File xmlFile = new File(PathKit.getRootClassPath()+"\\rule3.xml");
         Rule rule = JaxbKit.unmarshal(xmlFile , Rule.class);
-        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("area"));
+        System.out.println(PoiImporter.processSheet(file, rule,SysUser.class).get(0).getStr("contractStart"));
        
         
     }

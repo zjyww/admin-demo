@@ -1,10 +1,10 @@
 package com.demo.web.admin.model;
 
+import com.demo.web.admin.model.basemodel.BaseSysuser;
 import com.jfinal.ext.anotation.ModelMapping;
-import com.jfinal.plugin.activerecord.Model;
 
 @ModelMapping(tableName="t_sysuser",pkName="user_id")
-public class SysUser extends Model<SysUser>{
+public class SysUser extends BaseSysuser<SysUser>{
 
 	/**
 	 * 

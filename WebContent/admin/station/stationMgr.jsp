@@ -68,26 +68,28 @@
 												onclick="importExcel()">
 												导入 <i class="fa fa-file-excel-o" aria-hidden="true"></i>
 											</button>
-											<button type="button" class="btn btn-outline btn-default">
+											<button type="button" class="btn btn-outline btn-default" onclick="deleteStation()">
 												删除 <i class="glyphicon glyphicon-trash" aria-hidden="true"></i>
 											</button>
 										</div>
 									</div>
 								</div>
-								<table id="exampleTablePagination"
+								<table id="table"
 									data-toolbar="#exampleToolbar" data-striped="true"
 									data-side-pagination="server" data-toggle="table"
 									data-url="<%=basePath%>admin/station/data"
 									data-search-on-enter-key="true" data-height="500"
 									data-pagination="true" data-icon-size="outline"
 									data-show-refresh="true" data-show-columns="true"
-									data-search="true">
+									data-search="true" data-id-field>
 									<thead>
 										<tr>
 											<th data-checkbox="true"></th>
-											<th data-align="center" data-field="code">站点编码</th>
-											<th data-align="center" data-field="name">站点名称</th>
+											<th data-field="id" data-align="center" data-switchable="false" data-visible="false"></th>
+											<th data-align="center" data-field="code" data-sortable="true"  data-searchable="true">站点编码</th>
+											<th data-align="center" data-field="name" data-switchable="false" data-searchable="true" data-sortable="true" >站点名称</th>
 											<th data-align="center" data-field="area">区域</th>
+											<th data-align="center" data-switchable="false" data-formatter="operFormatter">操作</th>
 										</tr>
 									</thead>
 								</table>
@@ -124,13 +126,16 @@
     uploader.on( "uploadSuccess",function(file,res){
    		layer.close(lindex);
 		layer.msg(res.msg);
+		$('#table').bootstrapTable('refresh');
    	});
     uploader.on( "startUpload",function(file,res){
-    	lindex = layer.msg('导入中...', {shade:0.2,shadeClose:false,icon: 16});
+    	lindex = layer.msg('导入中...', {shade:0.2,shadeClose:false,icon: 16,time:0});
+    	
    	});
     uploader.on( "uploadError",function(file,res){
     	layer.close(lindex);
 		layer.msg(res.msg);
+		
    	});
     	function importExcel(){
     		$(".webuploader-element-invisible").trigger("click");
@@ -142,9 +147,108 @@
 				title: '新增站点信息',
 				shadeClose: false,
 				shade: 0.8,
-				area: ['1000px', '80%'],
-				content: '<%=basePath%>admin/station/add' //iframe的url
+				btn:["保存","取消"],
+				yes:function(index,layro){
+					 var form = layer.getChildFrame('form',index);
+					 var formData = $(form).serialize();
+					 $.ajax({
+			    			type: "POST",
+			    			url: "<%=basePath%>admin/station/save",     
+			    			dataType:"json",
+			    			data: formData,
+			    			success: function(res){
+			    				if(res.success == true){
+			    					layer.close(index);
+			    					$('#table').bootstrapTable('refresh');
+			    				}
+			    				layer.msg(res.msg);
+			    				
+			    			}  
+			    		}); 
+				},
+				btn2:function(index,layro){
+					layer.close(index);
+				},
+				area: ['1000px', '70%'],
+				content: '<%=basePath%>admin/station/add' 
 			});
+    	}
+    	function update(id){
+    		layer.open({
+				type: 2,
+				title: '编辑站点信息',
+				shadeClose: false,
+				shade: 0.8,
+				btn:["保存","取消"],
+				yes:function(index,layro){
+					 var form = layer.getChildFrame('form',index);
+					 var formData = $(form).serialize();
+					 $.ajax({
+			    			type: "POST",
+			    			url: "<%=basePath%>admin/station/save",     
+			    			dataType:"json",
+			    			data: formData,
+			    			success: function(res){
+			    				if(res.success == true){
+			    					layer.close(index);
+			    					$('#table').bootstrapTable('refresh');
+			    				}
+			    				layer.msg(res.msg);
+			    				
+			    			}  
+			    		}); 
+				},
+				btn2:function(index,layro){
+					layer.close(index);
+				},
+				area: ['1000px', '70%'],
+				content: '<%=basePath%>admin/station/edit?&id='+id 
+			});
+    	}
+    	function deleteStation(){
+    		var ckDatas = $('#table').bootstrapTable('getAllSelections');
+    		if(ckDatas.length == 0){
+    			layer.msg("请至少选择一条记录");
+    		}else{
+    			var selectColNames = "";
+				for ( var i = 0; i < ckDatas.length; i++) {
+					if(i>0){
+						selectColNames+=",";
+					}
+					selectColNames+=ckDatas[i].id;
+				}
+				$.ajax({
+	    			type: "POST",
+	    			url: "<%=basePath%>admin/station/delete",     
+	    			dataType:"json",
+	    			data: {
+	    				ids:selectColNames  
+	    			},
+	    			success: function(res){
+	    				if(res.success == true){
+	    					$('#table').bootstrapTable('refresh');
+	    				}
+	    				layer.msg(res.msg);
+	    			}  
+	    		}); 
+				
+    		}
+    	}
+    	
+    	function operFormatter(value,row,index){
+    		return "<div class='btn-group hidden-xs' id='exampleToolbar'"
+			+"role='group'>"
+			+"<button type='button' class='btn btn-outline btn-xs btn-default' onclick='update("+row.id+")'>"
+			+"修改"
+			+"</button>"
+			+"<button type='button' class='btn btn-xs btn-outline btn-default'"
+			+"onclick='contract("+row.id+")'>"
+			+"合同"
+			+"</button>"
+			+"<button type='button' class='btn btn-outline btn-xs btn-default' onclick='certificate("+row.id+")'>"
+			+"凭证 "
+			+"</button>"
+			+"</div>";
     	}
     </script>
 </body>

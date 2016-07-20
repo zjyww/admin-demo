@@ -1,10 +1,10 @@
 package com.demo.web.admin.model;
 
+import com.demo.web.admin.model.basemodel.BaseStation;
 import com.jfinal.ext.anotation.ModelMapping;
-import com.jfinal.plugin.activerecord.Model;
 
 @ModelMapping(tableName="t_station",pkName="id")
-public class Station extends Model<Station>{
+public class Station extends BaseStation<Station>{
 
 	/**
 	 * 

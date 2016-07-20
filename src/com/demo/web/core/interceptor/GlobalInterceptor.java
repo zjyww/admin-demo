@@ -1,5 +1,8 @@
 package com.demo.web.core.interceptor;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.jsoup.Jsoup;
@@ -33,6 +36,7 @@ public class GlobalInterceptor implements Interceptor {
         Controller c = ai.getController();
         HttpServletRequest request = c.getRequest();
         String url = request.getRequestURL().toString();
+      
         log.debug("GlobalInterceptor:" + url );
         try {
             if (url.indexOf("/admin/") == -1) {

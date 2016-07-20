@@ -41,153 +41,154 @@
 
 <body class="gray-bg">
     <div class="wrapper wrapper-content animated fadeInRight">
-		 <form method="get" class="form-horizontal">
+		 <form method="get" class="form-horizontal" id="formStation">
              <div class="form-group">
 				<label class="col-sm-1 control-label">站点编码:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="hidden" name="station.id" value="${station.id }"/>
+						<input type="text" class="form-control" name="station.code" value="${station.code }">
                     </div>
              
 				<label class="col-sm-1 control-label">站点名称:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.name" value="${station.name }">
                     </div>
             
 				<label class="col-sm-1 control-label">运营商编码:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.operatorCode" value="${station.operatorCode }">
                     </div>
              </div>
 			 <div class="form-group">
 				<label class="col-sm-1 control-label">基站名称:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.baseName" value="${station.baseName }">
                     </div>
              
 				<label class="col-sm-1 control-label">电表:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.electricity" value="${station.electricity }">
                     </div>
             
 				<label class="col-sm-1 control-label">区域:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.area" value="${station.area }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">付款类型:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.payType" value="${station.payType }">
                     </div>
              
 				<label class="col-sm-1 control-label">上笔支付之间:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control layer-date laydate-icon" id="lastPay">
+						<input type="text" class="form-control layer-date laydate-icon" id="lastPay" name="station.lastPay" value="${station.lastPay }">
                     </div>
             
 				<label class="col-sm-1 control-label">结算截止时间:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control layer-date laydate-icon" id="endPay">
+						<input type="text" class="form-control layer-date laydate-icon" id="endPay" name="station.endPay" value="${station.endPay }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">转账名称:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.transferName" value="${station.transferName }">
                     </div>
              
 				<label class="col-sm-1 control-label">开户银行:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.transferBank" value="${station.transferBank }">
                     </div>
             
 				<label class="col-sm-1 control-label">账号:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.transferCount" value="${station.transferCount }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">合同编号:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.contractCode" value="${station.contractCode }">
                     </div>
              
 				<label class="col-sm-1 control-label">合同开始时间:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control layer-date laydate-icon" id="start">
+						<input type="text" class="form-control layer-date laydate-icon" id="contractStart" name="station.contractStart" value="${station.contractStart }">
                     </div>
             
 				<label class="col-sm-1 control-label">合同结束时间:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control layer-date laydate-icon" id="end">
+						<input type="text" class="form-control layer-date laydate-icon" id="contractEnd" name="station.contractEnd" value="${station.contractEnd }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">合同甲方:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.contractA" value="${station.contractA }">
                     </div>
              
 				<label class="col-sm-1 control-label">联系人:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control"  name="station.contactMan" value="${station.contactMan }">
                     </div>
             
 				<label class="col-sm-1 control-label">联系电话:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.contactTelephone" value="${station.contactTelephone }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">协议单价:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.price" value="${station.price }">
                     </div>
              
 				<label class="col-sm-1 control-label">支付周期:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.payCircle" value="${station.payCircle }">
                     </div>
             
 				<label class="col-sm-1 control-label">续签人员:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.renewMan" value="${station.renewMan }">
                     </div>
              </div>
              <div class="form-group">
 				<label class="col-sm-1 control-label">取票人员:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.ticketMan" value="${station.ticketMan }">
                     </div>
              
 				<label class="col-sm-1 control-label">收票时间:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control layer-date laydate-icon" id="ticketTime">
+						<input type="text" class="form-control layer-date laydate-icon" id="ticketTime" name="station.ticketTime" value="${station.ticketTime }">
                     </div>
             
 				<label class="col-sm-1 control-label">备注:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.remark" value="${station.remark }">
                     </div>
              </div>
                <div class="form-group">
 				<label class="col-sm-1 control-label">是否移交:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.turnover" value="${station.turnover }">
                     </div>
              
-				<label class="col-sm-1 control-label">是否移交:</label>
+				<label class="col-sm-1 control-label">是否更名:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.rename" value="${station.rename }">
                     </div>
             
 				<label class="col-sm-1 control-label">长摊需确认:</label>
 					<div class="col-sm-3">
-						<input type="text" class="form-control">
+						<input type="text" class="form-control" name="station.ctconfirm" value="${station.ctconfirm }">
                     </div>
              </div>
 		</form>
-	<div>
+	</div>
 	<script type="text/javascript"
 		src="<%=basePath%>plugins/jquery/jQuery.js"></script>
 	<script

@@ -1,13 +1,20 @@
 package com.demo.web.admin.controller;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.demo.web.admin.model.Station;
 import com.demo.web.admin.model.SysUser;
 import com.demo.web.core.controller.BaseController;
+import com.demo.web.core.util.StringUtil;
+import com.jfinal.core.JFinalFilter;
 import com.jfinal.ext.anotation.RouteMapping;
 import com.jfinal.ext.kit.JaxbKit;
 import com.jfinal.ext.kit.excel.PoiImporter;
@@ -31,12 +38,20 @@ public class StationController extends BaseController{
     	render("/admin/station/stationMgr.jsp");
     }
     
-    public void data(){
+    public void data() throws Exception{
     	int start = getParaToInt("offset");
     	int pageSize = getParaToInt("limit");
+    	String search = new String(getPara("search","").getBytes("ISO8859-1"),"UTF-8");
     	int pageNum = (start+pageSize)/pageSize;
     	String sql = "select * ";
-    	Page<Station> station = Station.DAO.paginate(pageNum, pageSize, sql, "from t_station ");
+    	StringBuilder sqlWhere = new StringBuilder(" where ");
+    	sqlWhere.append("code like '%").append(search).append("%' ");
+    	sqlWhere.append("or name like '%").append(search).append("%' ");
+    	
+    	String sort = getPara("sort", "code");
+    	String order = getPara("order","asc");
+    	String orderBy = " order by "+sort + " "+order;
+    	Page<Station> station = Station.DAO.paginate(pageNum, pageSize, sql, "from t_station "+sqlWhere +orderBy);
     	Map<String, Object> result = new HashMap<String, Object>();
     	result.put("total", station.getTotalRow());
     	result.put("rows", station.getList());
@@ -67,6 +82,7 @@ public class StationController extends BaseController{
         
         renderJsonSuccess("导入成功");
     	} catch (Exception e) {
+    		e.printStackTrace();
     		renderJsonError("导入失败，请检查Excel文件格式！");
 		}
     }
@@ -89,15 +105,37 @@ public class StationController extends BaseController{
 	
 	public void edit(){
 		this.setAttr("station", Station.DAO.findById(this.getParaToInt("id")));
-		render("/amdin/station/edit.jsp");
+		render("/admin/station/edit.jsp");
 	}
 	
 	public void save(){
-		
+		try {
+			Station s  =this.getModel(Station.class);
+			Integer id = s.getId();
+			if(id == null){
+				s.save();
+			}else{
+				s.update();
+			}
+			renderJsonSuccess("保存成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJsonError("保存异常，请重试。");
+		}
 	}
 	
 	public void delete(){
-		
+		try {
+			String[] ids= this.getPara("ids").split(",");
+			for (int i = 0;i<ids.length;i++) {
+				Db.deleteById("t_station", "id", Integer.valueOf(ids[i]));
+			}
+			
+			renderJsonSuccess("删除成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJsonError("删除异常");
+		}
 	}
 	
 	public void uploadImage(){
