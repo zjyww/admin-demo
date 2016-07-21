@@ -15,12 +15,15 @@ import com.demo.web.admin.model.StationImg;
 import com.demo.web.admin.model.SysUser;
 import com.demo.web.core.controller.BaseController;
 import com.demo.web.core.util.StringUtil;
+import com.jfinal.config.Constants;
+import com.jfinal.config.JFinalConfig;
 import com.jfinal.core.JFinalFilter;
 import com.jfinal.ext.anotation.RouteMapping;
 import com.jfinal.ext.kit.JaxbKit;
 import com.jfinal.ext.kit.excel.PoiImporter;
 import com.jfinal.ext.kit.excel.Rule;
 import com.jfinal.kit.PathKit;
+import com.jfinal.kit.PropKit;
 import com.jfinal.log.Log;
 import com.jfinal.plugin.activerecord.Db;
 import com.jfinal.plugin.activerecord.Model;
@@ -139,16 +142,40 @@ public class StationController extends BaseController{
 	}
 	
 	public void contract(){
-		this.setAttr("imgs", StationImg.DAO.find("select * from t_station_img where type='1' and stationId = "+this.getPara("id")));
-		render("/admin/station/contract.jsp");
-	}
-	
-	public void certificate(){
-		this.setAttr("imgs", StationImg.DAO.find("select * from t_station_img where type='2' and stationId = "+this.getPara("id")));
+		this.setAttr("type", getPara("type"));
+		this.setAttr("stationId", getPara("id"));
+		this.setAttr("imgs", StationImg.DAO.find("select * from t_station_img where type='"+getPara("type")+"' and stationId = "+this.getParaToInt("id")));
 		render("/admin/station/contract.jsp");
 	}
 	
 	public void uploadImage(){
-		this.getFiles("file").get(0);
+		try {
+			UploadFile file = this.getFile("file");
+			StationImg img = new StationImg();
+			String path = PropKit.use("webconfig.properties").get("fileUploadPath")+"/"+file.getFileName();
+			img.set("path", path);
+			img.set("type", getPara("imgtype"));
+			img.set("name", file.getOriginalFileName());
+			img.set("stationId", getPara("stationId"));
+			img.save();
+			Map<String, Object> result = new HashMap<>();
+			result.put("success",true);
+			result.put("id", img.get("id"));
+			result.put("path", path);
+			result.put("name", file.getOriginalFileName());
+			result.put("msg", "上传成功");
+			renderJson(result);
+		} catch (Exception e) {
+			e.printStackTrace();
+			renderJsonError("上传图片异常，请重试");
+		}
+	}
+	public void deleteImg(){
+		try {
+			StationImg.DAO.deleteById(getParaToInt("id"));
+			renderJsonSuccess("删除成功");
+		} catch (Exception e) {
+			renderJsonError("删除失败");
+		}
 	}
 }

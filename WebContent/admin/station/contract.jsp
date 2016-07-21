@@ -24,60 +24,25 @@
 	rel="stylesheet">
 <body class="gray-bg">
 	<div class="wrapper wrapper-content animated fadeInRight" id="content">
-		<ul class="filelist">
-			<li id="file1">
-				<p class="title" id="t1">截图2-超sadadw edwdfsdsasa时.png</p>
+		<ul class="filelist" id="filelist">
+			<c:forEach items="${imgs }" var="i"> 
+				<li id="img${i.id }">
+				<p class="title">${i.name }</p>
 				<p class="imgWrap">
-					<img src="img/p_big1.jpg">
+					<img src="<%=basePath %>${i.path }" onclick="showImg(this)">
 				</p>
 				<div class="file-panel" id="p1" style="height: 0px;">
-					<span class="cancel" title="删除">删除</span> <span class="rotateRight">向右旋转</span>
-					<span class="rotateLeft">向左旋转</span>
+					<span class="cancel" title="删除" onclick="deleteImg(${i.id})">删除</span>
 				</div>
 			</li>
-			<li id="">
-				<p class="title">截图2-超时.png</p>
-				<p class="imgWrap">
-					<img src="img/p_big1.jpg">
-				</p>
-				<div class="file-panel" style="height: 0px;">
-					<span class="cancel" title="删除">删除</span> <span class="rotateRight">向右旋转</span>
-					<span class="rotateLeft">向左旋转</span>
-				</div>
-			</li>
-			<li id="">
-				<p class="title">截图2-超时.png</p>
-				<p class="imgWrap">
-					<img src="img/p_big1.jpg">
-				</p>
-				<div class="file-panel" style="height: 0px;">
-					<span class="cancel">删除</span> <span class="rotateRight">向右旋转</span>
-					<span class="rotateLeft">向左旋转</span>
-				</div>
-			</li>
-			<li id="">
-				<p class="title">截图2-超时.png</p>
-				<p class="imgWrap">
-					<img src="img/p_big1.jpg">
-				</p>
-				<div class="file-panel" style="height: 0px;">
-					<span class="cancel">删除</span> <span class="rotateRight">向右旋转</span>
-					<span class="rotateLeft">向左旋转</span>
-				</div>
-			</li>
-			<li id="">
-				<p class="title">截图2-超时.png</p>
-				<p class="imgWrap">
-					<img src="img/p_big1.jpg">
-				</p>
-				<div class="file-panel" style="height: 0px;">
-					<span class="cancel" title="删除">删除</span> <span class="rotateRight">向右旋转</span>
-					<span class="rotateLeft">向左旋转</span>
-				</div>
-			</li>
+			</c:forEach>
 		</ul>
+			<div id="noimg" class="middle-box text-center animated fadeInDown" style="margin-top:20px;<c:if test='${imgs.size() != 0 }'>display:none</c:if>">
+        		<h2 class="font-bold">暂无相关文件,请上传</h2>
+        		</div>
 	</div>
-	<input type="file" id="picker" style="display: none">
+	
+	<input type="file" id="imgpick" style="display: none">
 	<script type="text/javascript"
 		src="<%=basePath%>plugins/jquery/jQuery.js"></script>
 	<script type="text/javascript"
@@ -85,41 +50,98 @@
 	<script src="<%=basePath%>plugins/webuploader/webuploader.nolog.js"></script>
 	<script type="text/javascript">
 	// 初始化Web Uploader
-	var uploader = WebUploader.create({
+	var lindex;
+	var imgUploader = WebUploader.create({
 	    // 选完文件后，是否自动上传。
 	    auto: true,
-		pick: '#picker',
+		pick: '#imgpick',
 	    swf: "<%=basePath%>plugins/webuploader/Uploader.swf",
-	    server:"<%=basePath%>admin/station/importExcel",
+	    server:"<%=basePath%>admin/station/uploadImage",
 	    // 只允许选择图片文件。
 	    accept: {
 	        title: 'Images',
 	        extensions: 'gif,jpg,jpeg,bmp,png',
 	        mimeTypes: 'image/*'
-	    },
-	    thumb:{
-	    	width: 180,
-	        height: 120,
-	        // 图片质量，只有type为`image/jpeg`的时候才有效。
-	        quality: 80,
-	        // 是否允许放大，如果想要生成小图的时候不失真，此选项应该设置为false.
-	        allowMagnify: false,
-	        // 是否允许裁剪。
-	        crop: true
+	    }
+	    ,formData:{
+	    	"stationId":"${stationId}",
+	    	"imgtype":"${type}"
 	    }
 	});
+	imgUploader.on( "uploadSuccess",function(file,res){
+	   		layer.close(lindex);
+	   		if(res.success){
+	   			$("#filelist").prepend("<li id='img"+res.id+"'>"
+				+"<p class='title'>"+res.name+"</p>"
+				+"<p class='imgWrap'>"
+				+"<img src='<%=basePath%>"+res.path+"' onclick='showImg(this)'>"
+				+"</p>"
+				+"<div class='file-panel' style='height: 0px;'>"
+				+"<span class='cancel' onclick='deleteImg("+res.id+")'>删除</span>"
+				+"</div>"
+				+"</li>")
+	   		}
+	   		$("#noimg").hide();
+	   		$("#img"+res.id).on("mouseenter",function(){
+				$("#img"+res.id+" .title").stop().animate({height:28});
+				$("#img"+res.id+" .file-panel").stop().animate({height:28});
+			})
+			$("#img"+res.id).on("mouseleave",function(){
+				$("#img"+res.id+" .title").stop().animate({height:0});
+				$("#img"+res.id+" .file-panel").stop().animate({height:0});
+			})
+			layer.msg(res.msg);
+			imgUploader.reset();
+	   	});
+	imgUploader.on( "startUpload",function(file,res){
+	    	lindex = layer.msg('上传中...', {shade:0.2,shadeClose:false,icon: 16,time:0});
+	   	});
+	imgUploader.on( "uploadError",function(file,res){
+	    	layer.close(lindex);
+			layer.msg(res.msg);
+			imgUploader.reset();
+	   	});
 	$(function(){
-		$("#file1").on("mouseenter",function(){
-		$("#t1").stop().animate({height:28});
-			$("#p1").stop().animate({height:28});
-		})
-		$("#file1").on("mouseleave",function(){
-		$("#t1").stop().animate({height:0});
-			$("#p1").stop().animate({height:0});
-		})
+		<c:forEach items="${imgs }" var="i"> 
+			$("#img${i.id}").on("mouseenter",function(){
+				$("#img${i.id} .title").stop().animate({height:28});
+				$("#img${i.id} .file-panel").stop().animate({height:28});
+			})
+			$("#img${i.id}").on("mouseleave",function(){
+				$("#img${i.id} .title").stop().animate({height:0});
+				$("#img${i.id} .file-panel").stop().animate({height:0});
+			})
+		</c:forEach>
 	})
+	function deleteImg(id){
+		$.ajax({
+			type: "POST",
+			url: "<%=basePath%>admin/station/deleteImg",     
+			dataType:"json",
+			data: {
+				id:id  
+			},
+			success: function(res){
+				if(res.success == true){
+					$("#img"+id).remove();
+				}
+				layer.msg(res.msg);
+				if($("#filelist li").length == 0){
+					$("#noimg").show();
+				}
+			}  
+		}); 
+	}
 	function addImg(){
-		$("#picker").trigger("click");
+		$(".webuploader-element-invisible").trigger("click");
+	}
+	function showImg(obj){
+		var image = new Image();
+		  image.src = obj.src;
+		  if (image.complete) {
+			  parent.showImg(image.src,image.width,image.height)
+		  } 
+		
 	}
 	
 	</script>

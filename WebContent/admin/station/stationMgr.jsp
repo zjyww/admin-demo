@@ -97,6 +97,7 @@
 				</div>
 			</div>
 			<input type="file" id="picker" style="display: none">
+			<div id='showImg' class='layui-layer-wrap' style='display: none;'><img src=''></div>
 		</div>
 	</div>
 	<script type="text/javascript"
@@ -129,7 +130,6 @@
    	});
     uploader.on( "startUpload",function(file,res){
     	lindex = layer.msg('导入中...', {shade:0.2,shadeClose:false,icon: 16,time:0});
-    	uploader.reset();
    	});
     uploader.on( "uploadError",function(file,res){
     	layer.close(lindex);
@@ -248,7 +248,25 @@
 					layer.close(index);
 				},
 				area: ['630px', '65%'],
-				content: '<%=basePath%>admin/station/contract?&id='+id 
+				content: '<%=basePath%>admin/station/contract?&id='+id+'&type=1'
+			});
+    	}
+    	function certificate(id){
+    		layer.open({
+				type: 2,
+				title: '查看凭证信息',
+				shadeClose: false,
+				shade: 0.8,
+				btn:["添加凭证","关闭"],
+				yes:function(index,layro){
+					 var iframeWin = window[layro.find('iframe')[0]['name']]; 
+					 iframeWin.addImg();
+				},
+				btn2:function(index,layro){
+					layer.close(index);
+				},
+				area: ['630px', '65%'],
+				content: '<%=basePath%>admin/station/contract?&id='+id+'&type=2'
 			});
     	}
     	function operFormatter(value,row,index){
@@ -265,6 +283,32 @@
 			+"凭证 "
 			+"</button>"
 			+"</div>";
+    	}
+    	function showImg(src,width,height){
+    		$("#showImg img").attr("src",src);
+    		console.log($(window).width())
+    		console.log($(window).height())
+    		console.log(width)
+    		if(width > $(window).width()-100){
+    			console.log("ss")
+    			width = "95%";
+    		} 
+    		if(height > $(window).height()-100){
+    			height = "85%";
+    		}
+    		layer.open({
+    			  type: 1,
+    			  title: false,
+    			  closeBtn: 1,
+    			  area: [width,height],
+    			  skin: 'layui-layer-nobg', //没有背景色
+    			  shadeClose: true,
+    			  content: $("#showImg"),
+    			  zIndex:20000000
+    			  ,success: function(layero){
+    			        layer.setTop(layero); //重点2
+    			    }
+    			});
     	}
     </script>
 </body>
