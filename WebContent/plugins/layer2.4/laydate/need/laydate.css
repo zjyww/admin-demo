@@ -1,18 +1,19 @@
-/** 
- 
- @Name£º laydate ºËĞÄÑùÊ½
- @Author£ºÏÍĞÄ
- @Site£ºhttp://sentsin.com/layui/laydate
- 
+ï»¿/**
+
+ @Nameé”›ï¿½ laydate éç¨¿ç¸¾éå³°ç´¡
+ @Authoré”›æ°³æè¹‡ï¿½
+ @Siteé”›æ­¨ttp://sentsin.com/layui/laydate
+
 **/
 
 html{_background-image:url(about:blank); _background-attachment:fixed;}
+.layer-date{display: inline-block!important;vertical-align:text-top;max-width:240px;}
 .laydate_body .laydate_box, .laydate_body .laydate_box *{margin:0; padding:0;}
 .laydate-icon,
 .laydate-icon-default,
 .laydate-icon-danlan,
 .laydate-icon-dahong,
-.laydate-icon-molv{height:28px; line-height:28px; padding-right:20px; border:1px solid #C6C6C6; background-repeat:no-repeat; background-position:right center;  background-color:#fff; outline:0;}
+.laydate-icon-molv{height:34px; padding-right:20px;min-width:34px;vertical-align: text-top;border:1px solid #C6C6C6; background-repeat:no-repeat; background-position:right center;  background-color:#fff; outline:0;}
 .laydate-icon-default{ background-image:url(../skins/default/icon.png)}
 .laydate-icon-danlan{border:1px solid #B1D2EC; background-image:url(../skins/danlan/icon.png)}
 .laydate-icon-dahong{background-image:url(../skins/dahong/icon.png)}
@@ -30,13 +31,14 @@ html{_background-image:url(about:blank); _background-attachment:fixed;}
 .laydate_body .laydate_ym{position:relative; float:left; height:24px; cursor:pointer;}
 .laydate_body .laydate_ym input{float:left; height:24px; line-height:24px; text-align:center; border:none; cursor:pointer;}
 .laydate_body .laydate_ym .laydate_yms{position:absolute; left: -1px; top: 24px; height:181px;}
-.laydate_body .laydate_y{width:121px; margin-right:6px;}
+.laydate_body .laydate_y{width:121px;}
 .laydate_body .laydate_y input{width:64px; margin-right:15px;}
 .laydate_body .laydate_y .laydate_yms{width:121px; text-align:center;}
 .laydate_body .laydate_y .laydate_yms a{position:relative; display:block; height:20px;}
 .laydate_body .laydate_y .laydate_yms ul{height:139px; padding:0; *overflow:hidden;}
 .laydate_body .laydate_y .laydate_yms ul li{float:left; width:60px; height:20px; line-height: 20px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;}
-.laydate_body .laydate_m{width:99px;}
+.laydate_box *{box-sizing:content-box!important;}
+.laydate_body .laydate_m{width:99px;float: right;margin-right:-2px;}
 .laydate_body .laydate_m .laydate_yms{width:99px; padding:0;}
 .laydate_body .laydate_m input{width:42px; margin-right:15px;}
 .laydate_body .laydate_m .laydate_yms span{display:block; float:left; width:42px; margin: 5px 0 0 5px; line-height:24px; text-align:center; _display:inline;}

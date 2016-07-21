@@ -23,7 +23,7 @@
 		.form-control{
 			padding:2px 4px;
 			line-height:24px;
-			height:28px;
+			height:34px;
 		}
 		.col-sm-1{
 			width:10%
@@ -34,7 +34,7 @@
 		.form-group .col-sm-1,.form-froup .col-sm-3{
 			padding-right:2px;
 			padding-left:2px;
-			padding-top:5px;
+			padding-top:8px;
 		}
 	</style>
 	</head>
@@ -195,7 +195,59 @@
 		src="<%=basePath%>plugins/bootstrap/js/bootstrap.min.js?v=3.3.6"></script>
     <script src="<%=basePath%>plugins/layer2.4/laydate/laydate.js"></script>
 	<script>
-		
+	var start = {
+		    elem: '#contractStart',
+		    format: 'YYYY/MM/DD',
+		    max: '2099-06-16 23:59:59', //最大日期
+		    istime: false,
+		    istoday: false,
+		    choose: function(datas){
+		         end.min = datas; //开始日选好后，重置结束日的最小日期
+		         end.start = datas //将结束日的初始值设定为开始日
+		    }
+		};
+		var end = {
+		    elem: '#contractEnd',
+		    format: 'YYYY/MM/DD',
+		    max: '2099-06-16 23:59:59',
+		    istime: false,
+		    istoday: false,
+		    choose: function(datas){
+		        start.max = datas; //结束日选好后，重置开始日的最大日期
+		    }
+		};
+		var ticketTime = {
+			    elem: '#ticketTime',
+			    format: 'YYYY/MM/DD',
+			    max: '2099-06-16 23:59:59',
+			    istime: false,
+			    istoday: false,
+			    choose: function(datas){
+			    }
+			};
+		var lastPay = {
+			    elem: '#lastPay',
+			    format: 'YYYY/MM/DD',
+			    max: '2099-06-16 23:59:59',
+			    istime: false,
+			    istoday: false,
+			    choose: function(datas){
+			    }
+			};
+		var endPay = {
+			    elem: '#endPay',
+			    format: 'YYYY/MM/DD',
+			    max: '2099-06-16 23:59:59',
+			    istime: false,
+			    istoday: false,
+			    choose: function(datas){
+			    }
+			};
+		laydate(start);
+		laydate(end);
+		laydate(ticketTime);
+		laydate(lastPay);
+		laydate(endPay);
 	</script>
 </body>
 </html>

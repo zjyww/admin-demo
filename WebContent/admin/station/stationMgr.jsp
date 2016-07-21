@@ -22,8 +22,6 @@
 <link
 	href="<%=basePath%>plugins/bootstrap-table/bootstrap-table.min.css"
 	rel="stylesheet">
-<link href="<%=basePath%>plugins/webuploader/webuploader.css"
-	rel="stylesheet">
 <link href="<%=basePath%>plugins/layer2.4/layer/skin/layer.css"
 	rel="stylesheet" />
 <style type="text/css">
@@ -127,15 +125,16 @@
    		layer.close(lindex);
 		layer.msg(res.msg);
 		$('#table').bootstrapTable('refresh');
+		uploader.reset();
    	});
     uploader.on( "startUpload",function(file,res){
     	lindex = layer.msg('导入中...', {shade:0.2,shadeClose:false,icon: 16,time:0});
-    	
+    	uploader.reset();
    	});
     uploader.on( "uploadError",function(file,res){
     	layer.close(lindex);
 		layer.msg(res.msg);
-		
+		uploader.reset();
    	});
     	function importExcel(){
     		$(".webuploader-element-invisible").trigger("click");
@@ -169,7 +168,7 @@
 				btn2:function(index,layro){
 					layer.close(index);
 				},
-				area: ['1000px', '70%'],
+				area: ['1100px', '83%'],
 				content: '<%=basePath%>admin/station/add' 
 			});
     	}
@@ -234,7 +233,24 @@
 				
     		}
     	}
-    	
+    	function contract(id){
+    		layer.open({
+				type: 2,
+				title: '查看合同信息',
+				shadeClose: false,
+				shade: 0.8,
+				btn:["添加合同","关闭"],
+				yes:function(index,layro){
+					 var iframeWin = window[layro.find('iframe')[0]['name']]; 
+					 iframeWin.addImg();
+				},
+				btn2:function(index,layro){
+					layer.close(index);
+				},
+				area: ['630px', '65%'],
+				content: '<%=basePath%>admin/station/contract?&id='+id 
+			});
+    	}
     	function operFormatter(value,row,index){
     		return "<div class='btn-group hidden-xs' id='exampleToolbar'"
 			+"role='group'>"

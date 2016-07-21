@@ -11,6 +11,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 
 import com.demo.web.admin.model.Station;
+import com.demo.web.admin.model.StationImg;
 import com.demo.web.admin.model.SysUser;
 import com.demo.web.core.controller.BaseController;
 import com.demo.web.core.util.StringUtil;
@@ -130,12 +131,21 @@ public class StationController extends BaseController{
 			for (int i = 0;i<ids.length;i++) {
 				Db.deleteById("t_station", "id", Integer.valueOf(ids[i]));
 			}
-			
 			renderJsonSuccess("删除成功");
 		} catch (Exception e) {
 			e.printStackTrace();
 			renderJsonError("删除异常");
 		}
+	}
+	
+	public void contract(){
+		this.setAttr("imgs", StationImg.DAO.find("select * from t_station_img where type='1' and stationId = "+this.getPara("id")));
+		render("/admin/station/contract.jsp");
+	}
+	
+	public void certificate(){
+		this.setAttr("imgs", StationImg.DAO.find("select * from t_station_img where type='2' and stationId = "+this.getPara("id")));
+		render("/admin/station/contract.jsp");
 	}
 	
 	public void uploadImage(){
