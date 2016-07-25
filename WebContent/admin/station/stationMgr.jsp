@@ -291,9 +291,6 @@
     	}
     	function showImg(src,width,height){
     		$("#showImg img").attr("src",src);
-    		console.log($(window).width())
-    		console.log($(window).height())
-    		console.log(width)
     		if(width > $(window).width()-100){
     			console.log("ss")
     			width = "95%";

@@ -69,4 +69,6 @@ public class AdminController extends BaseController{
         result.put("paymentData", paymentData);
         renderJson(result);
 	}
+    
+  
 }

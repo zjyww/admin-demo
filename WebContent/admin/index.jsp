@@ -58,73 +58,16 @@
 								<div class="ibox-title">
 									<h5>最新消息</h5>
 									<div class="ibox-tools">
-										<span class="label label-warning-light">10条未读</span>
+										<span class="label label-warning-light" id="unread-count"></span>
 									</div>
 								</div>
 								<div class="ibox-content">
-									<div class="feed-activity-list">
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-warning">未读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small> <a class="pull-right btn btn-xs btn-white"><i
-													class="fa fa-eye"></i>朕已阅 </a>
-											</div>
-										</div>
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-primary">已读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small>
-											</div>
-										</div>
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-primary">已读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small>
-											</div>
-										</div>
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-warning">已读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small> <a class="pull-right btn btn-xs btn-white"><i
-													class="fa fa-eye"></i>朕已阅 </a>
-											</div>
-										</div>
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-warning">已读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small> <a class="pull-right btn btn-xs btn-white"><i
-													class="fa fa-eye"></i>朕已阅 </a>
-											</div>
-										</div>
-										<div class="feed-element">
-											<div>
-												<small class="pull-right label label-warning">已读</small>
-												<p>九部令人拍案叫绝的惊悚悬疑剧情佳作】如果你喜欢《迷雾》《致命ID》《电锯惊魂》《孤儿》《恐怖游轮》这些好片，那么接下来
-												</p>
-												<small class="text-muted "><i class="fa fa-clock-o"></i>2014.11.8
-													12:22</small>
-											</div>
-										</div>
+									<div class="feed-activity-list" id="msg">
 
 									</div>
-									<button class="btn btn-primary btn-block m-t">
+									<!-- <button class="btn btn-primary btn-block m-t">
 										<i class="fa fa-arrow-down"></i> 加载更多
-									</button>
+									</button> -->
 								</div>
 							</div>
 						</div>
@@ -237,8 +180,55 @@
 			        myChart.setOption(option);
 				}
 			});
-	        
+			getMsg();
 		});
+		function getMsg(){
+			$.get("<%=basePath%>admin/sysMsg/getMsg?offset=0&limit=6").done(function (data) {
+				if(data.rows.length > 0 ){
+					var eleHtml = "";
+					$.each(data.rows, function(i, value) {
+						eleHtml += formatMsgEle(value);
+					});
+					$("#unread-count").html(data.unread+"条未读");
+					$("#msg").html(eleHtml);
+				}
+			});
+		}
+		function toRead(id){
+			
+			$.ajax({
+    			type: "POST",
+    			url: "<%=basePath%>admin/sysMsg/toRead",     
+    			dataType:"json",
+    			data: {
+    				ids:id 
+    			},
+    			success: function(res){
+    				if(res.success == true){
+    					getMsg();
+    				}
+    			}  
+    		}); 
+		}
+		function formatMsgEle(data){
+			var classLabel ="label-warning";
+			var flag ="未读";
+			var toRead = "<a class='pull-right btn btn-xs btn-white'><i"
+				+"class='fa fa-eye' onclick='toRead("+data.id+")'></i>朕已阅 </a>";
+			if(data.state == '2'){
+				classLabel = "label-primary";
+				flag = "已读";
+				toRead = "";
+			}
+			
+			return "<div class='feed-element'>"
+				+"<div>"
+				+"<small class='pull-right label "+classLabel+"'>"+flag+"</small>"
+				+"<p>"+data.content+"</p>"
+				+"<small class='text-muted '><i class='fa fa-clock-o'></i>"+data.createtime+"</small>"+toRead
+				+"</div>"
+			+"</div>"
+		}
     </script>
 </body>
 

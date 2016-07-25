@@ -11,6 +11,7 @@ import com.jfinal.config.Plugins;
 import com.jfinal.config.Routes;
 import com.jfinal.ext.plugin.AutoModelMappingPlugin;
 import com.jfinal.ext.plugin.AutoRouteMappingPlugin;
+import com.jfinal.ext.plugin.QuartzPlugin;
 import com.jfinal.ext.render.ErrorRenderFactory;
 import com.jfinal.kit.StrKit;
 import com.jfinal.log.Log;
@@ -116,7 +117,8 @@ public class WebConfig extends JFinalConfig {
             //arp.setTransactionLevel(4);
             p.add(arp);
         }
-     // 用于缓存bbs模块的redis服务
+        QuartzPlugin quartz = new QuartzPlugin("jobs.properties");
+        p.add(quartz);
     }
 
     /**

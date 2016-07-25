@@ -81,7 +81,7 @@
                     </div>
                     <label class="col-sm-2 control-label">报账日期:</label>
 					<div class="col-sm-4">
-						<input type="text" class="form-control layer-date laydate-icon" name="stationElectric.createdate" id="createdate" value="${stationElectric.paydate }" >
+						<input type="text" class="form-control layer-date laydate-icon" name="stationElectric.createdate" id="createdate" value="${stationElectric.createdate }" >
                     </div>
              </div>
              <div class="form-group">
