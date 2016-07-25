@@ -34,6 +34,7 @@ public class MsgJob implements Job{
 		List<Station> pays = Station.DAO.find("select endPay,code,name from t_station where endPay >= ? and endPay < ?",endpayStart,endpayEnd);
 		
 		
+		
 	}
 
 }
