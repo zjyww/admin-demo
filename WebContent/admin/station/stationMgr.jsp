@@ -85,9 +85,14 @@
 											<th data-checkbox="true"></th>
 											<th data-field="id" data-align="center" data-switchable="false" data-visible="false"></th>
 											<th data-align="center" data-field="code" data-sortable="true"  data-searchable="true">站点编码</th>
-											<th data-align="center" data-field="name" data-switchable="false" data-searchable="true" data-sortable="true" >站点名称</th>
+											<th data-align="center" data-field="name" data-switchable="false" data-searchable="true" data-sortable="false" >站点名称</th>
 											<th data-align="center" data-field="area">区域</th>
-											<th data-align="center" data-switchable="false" data-formatter="operFormatter">操作</th>
+											<th data-align="center" data-field="operatorcode">运营商编码</th>
+											<th data-align="center" data-field="contractstart" data-sortable="true">合同开始时间</th>
+											<th data-align="center" data-field="contractend" data-sortable="true">合同结束时间</th>
+											<th data-align="center" data-field="lastpay" data-sortable="true">上笔支付时间</th>
+											<th data-align="center" data-field="endpay" data-sortable="true">结算截止时间</th>
+											<th data-width="130" data-align="center" data-switchable="false" data-formatter="operFormatter">操作</th>
 										</tr>
 									</thead>
 								</table>
@@ -168,7 +173,7 @@
 				btn2:function(index,layro){
 					layer.close(index);
 				},
-				area: ['1100px', '83%'],
+				area: ['1100px', '85%'],
 				content: '<%=basePath%>admin/station/add' 
 			});
     	}
@@ -200,7 +205,7 @@
 				btn2:function(index,layro){
 					layer.close(index);
 				},
-				area: ['1000px', '70%'],
+				area: ['1100px', '85%'],
 				content: '<%=basePath%>admin/station/edit?&id='+id 
 			});
     	}
@@ -218,7 +223,7 @@
 				}
 				$.ajax({
 	    			type: "POST",
-	    			url: "<%=basePath%>admin/station/delete",     
+	    			url: "<%=basePath%>admin/stationElectric/delete",     
 	    			dataType:"json",
 	    			data: {
 	    				ids:selectColNames  

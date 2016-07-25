@@ -9,7 +9,7 @@
                         <button aria-controls="navbar" aria-expanded="false" data-target="#navbar" data-toggle="collapse" class="navbar-toggle collapsed" type="button">
                             <i class="fa fa-reorder"></i>
                         </button>
-                        <a href="#" class="navbar-brand">报账管理系统</a>
+                        <span class="navbar-brand">报账管理系统</span>
                     </div>
                     <div class="navbar-collapse collapse" id="navbar">
                         <ul class="nav navbar-nav">
@@ -20,7 +20,7 @@
                                 <a href="<%=basePath%>admin/station/index">站点信息管理</a>
                             </li>
                             <li class="nav J_menuTab navbar-top-links">
-                                <a href="">电费信息管理</a>
+                                <a href="<%=basePath%>admin/stationElectric/index">电量报账管理</a>
                             </li>
 
                         </ul>

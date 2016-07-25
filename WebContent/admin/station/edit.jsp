@@ -81,7 +81,7 @@
 						<input type="text" class="form-control" name="station.payType" value="${station.payType }">
                     </div>
              
-				<label class="col-sm-1 control-label">上笔支付之间:</label>
+				<label class="col-sm-1 control-label">上笔支付时间:</label>
 					<div class="col-sm-3">
 						<input type="text" class="form-control layer-date laydate-icon" id="lastPay" name="station.lastPay" value="${station.lastPay }">
                     </div>

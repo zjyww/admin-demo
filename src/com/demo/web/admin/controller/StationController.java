@@ -1,23 +1,16 @@
 package com.demo.web.admin.controller;
 
 import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang3.StringUtils;
-
 import com.demo.web.admin.model.Station;
 import com.demo.web.admin.model.StationImg;
-import com.demo.web.admin.model.SysUser;
 import com.demo.web.core.controller.BaseController;
-import com.demo.web.core.util.StringUtil;
-import com.jfinal.config.Constants;
-import com.jfinal.config.JFinalConfig;
-import com.jfinal.core.JFinalFilter;
 import com.jfinal.ext.anotation.RouteMapping;
 import com.jfinal.ext.kit.JaxbKit;
 import com.jfinal.ext.kit.excel.PoiImporter;
@@ -151,8 +144,15 @@ public class StationController extends BaseController{
 	public void uploadImage(){
 		try {
 			UploadFile file = this.getFile("file");
+			DateFormat format = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+			String formatDate = format.format(new Date());
+			String originName = file.getFileName();
+			String fileName = formatDate + originName.substring(originName.lastIndexOf('.'), originName.length());
+			String folder = PropKit.use("webconfig.properties").get("fileUploadPath")+"\\";
+			super.getFile("file").getFile().renameTo(new File(PathKit.getWebRootPath()+"\\"+folder+fileName));
+			
 			StationImg img = new StationImg();
-			String path = PropKit.use("webconfig.properties").get("fileUploadPath")+"/"+file.getFileName();
+			String path = folder+fileName;
 			img.set("path", path);
 			img.set("type", getPara("imgtype"));
 			img.set("name", file.getOriginalFileName());

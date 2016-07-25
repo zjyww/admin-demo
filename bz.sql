@@ -75,3 +75,5 @@ CREATE TABLE `t_sysuser` (
   `salt` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+INSERT INTO `t_sysuser` VALUES (1, 'admin', 'DnRCv8zl5wN/C/bo5hJxWPsj5F0=', 'xdKmaAuC9hs=');
